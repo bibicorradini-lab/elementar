@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elementar — Pitch Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--dark:#042300;--accent:#91DE5A;--surface:#E3DFD6;--aux:#828282;--white:#fff;--radius:8px}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'Almarai',sans-serif;background:var(--dark)}
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--accent);transition:width .4s ease;z-index:100}
+#nav{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;z-index:100;background:rgba(4,35,0,.7);backdrop-filter:blur(16px);border:1px solid rgba(145,222,90,.2);border-radius:50px;padding:9px 22px}
+#nav button{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;font-size:17px;transition:.2s;padding:4px 8px;border-radius:4px;font-family:'Almarai',sans-serif}
+#nav button:hover{color:var(--accent)}
+#slide-counter{color:rgba(255,255,255,.35);font-size:11px;font-weight:700;letter-spacing:2px;min-width:56px;text-align:center}
+#deck{width:100%;height:100%;position:relative}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:56px 64px;opacity:0;pointer-events:none;transition:opacity .45s ease,transform .45s ease;transform:translateY(24px)}
+.slide.active{opacity:1;pointer-events:all;transform:translateY(0)}
+.slide.exit{opacity:0;transform:translateY(-24px)}
+.slide-label{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.slide-title{font-size:clamp(26px,3.8vw,42px);font-weight:800;color:#fff;line-height:1.2;margin-bottom:8px}
+.slide-title span{color:var(--accent)}
+.slide-header{text-align:center;margin-bottom:40px}
+/* S1 */
+#s1{background:var(--dark);overflow:hidden}
+#s1-bg{position:absolute;inset:0;pointer-events:none}
+.s1-orb{position:absolute;border-radius:50%;filter:blur(80px);animation:pulse 6s ease-in-out infinite}
+.orb1{width:500px;height:500px;background:rgba(145,222,90,.12);top:-100px;right:-100px}
+.orb2{width:350px;height:350px;background:rgba(4,35,0,.8);bottom:-80px;left:-80px;animation-delay:2s}
+.orb3{width:250px;height:250px;background:rgba(145,222,90,.07);bottom:100px;right:200px;animation-delay:4s}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.s1-content{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:80px;max-width:1100px;width:100%;align-items:center}
+.logo-row{display:flex;align-items:center;gap:14px;margin-bottom:44px}
+.logo-shield{width:48px;height:48px}
+.logo-text{font-size:22px;font-weight:800;letter-spacing:5px;color:#fff;text-transform:uppercase}
+.logo-sub{font-size:10px;letter-spacing:3px;color:var(--accent);font-weight:700;text-transform:uppercase;margin-left:1px}
+.s1-headline{font-size:clamp(36px,5vw,60px);font-weight:800;color:#fff;line-height:1.1;margin-bottom:20px}
+.s1-headline em{color:var(--accent);font-style:normal;display:block}
+.s1-desc{font-size:15px;color:rgba(255,255,255,.55);line-height:1.85;font-weight:300;max-width:420px}
+.s1-badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px}
+.badge{background:rgba(145,222,90,.1);border:1px solid rgba(145,222,90,.25);color:var(--accent);padding:7px 18px;border-radius:50px;font-size:12px;font-weight:700;letter-spacing:.5px}
+.s1-card{background:rgba(255,255,255,.04);border:1px solid rgba(145,222,90,.15);border-radius:16px;padding:28px;backdrop-filter:blur(8px)}
+.s1-card-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:6px}
+.s1-card-val{font-size:38px;font-weight:800;color:#fff;line-height:1}
+.s1-card-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:7px}
+.s1-cards-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.s1-ticker{background:rgba(145,222,90,.08);border:1px solid rgba(145,222,90,.2);border-radius:12px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between}
+.s1-ticker-left{font-size:12px;color:rgba(255,255,255,.5)}
+.s1-ticker-val{font-size:14px;font-weight:800;color:var(--accent)}
+.typewriter-wrap{margin-top:28px;font-size:18px;font-weight:700;color:var(--accent);min-height:28px}
+.cursor{animation:blink .7s infinite}
+@keyframes blink{50%{opacity:0}}
+/* S2 */
+#s2{background:linear-gradient(160deg,#061a04 0%,#0a2706 60%,#061505 100%)}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:920px;width:100%}
+.stat-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:28px 22px;transition:.3s;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:.4s}
+.stat-card:hover::before{transform:scaleX(1)}
+.stat-card:hover{background:rgba(145,222,90,.05);border-color:rgba(145,222,90,.2)}
+.stat-icon{font-size:28px;margin-bottom:14px}
+.stat-num{font-size:clamp(30px,4.5vw,48px);font-weight:800;color:var(--accent);line-height:1}
+.stat-desc{font-size:13px;color:rgba(255,255,255,.45);margin-top:10px;line-height:1.6;font-weight:300}
+.problem-quote{max-width:720px;margin-top:32px;background:rgba(145,222,90,.06);border:1px solid rgba(145,222,90,.15);border-radius:12px;padding:22px 28px;text-align:left;display:flex;gap:20px;align-items:flex-start}
+.quote-mark{font-size:48px;color:var(--accent);opacity:.4;line-height:.8;font-weight:800;flex-shrink:0}
+.problem-quote p{color:rgba(255,255,255,.65);font-size:14px;line-height:1.75;font-weight:300}
+.problem-quote cite{display:block;margin-top:8px;font-size:11px;color:var(--aux);font-style:normal}
+/* S3 */
+#s3{background:linear-gradient(150deg,#061a04 0%,#08200a 100%)}
+.solution-layout{display:grid;grid-template-columns:1fr 1.1fr;gap:48px;max-width:1020px;width:100%;align-items:start}
+.flow-steps{display:flex;flex-direction:column;gap:0;margin-top:20px}
+.flow-step{display:flex;gap:18px;align-items:flex-start;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.05);opacity:0;transform:translateX(-16px);transition:.4s}
+.flow-step.visible{opacity:1;transform:none}
+.step-num{width:34px;height:34px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--dark);flex-shrink:0;margin-top:2px}
+.step-body h4{font-size:14px;font-weight:700;color:#fff;margin-bottom:4px}
+.step-body p{font-size:13px;color:rgba(255,255,255,.45);line-height:1.6;font-weight:300}
+.trigger-box{background:rgba(255,255,255,.03);border:1px solid rgba(145,222,90,.12);border-radius:14px;padding:26px}
+.trigger-title{font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+.trigger-item{display:flex;align-items:center;gap:14px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.trigger-item:last-of-type{border:none}
+.trigger-icon{font-size:22px;width:36px;text-align:center}
+.trigger-info h5{font-size:13px;font-weight:700;color:#fff}
+.trigger-info p{font-size:11px;color:rgba(255,255,255,.35);margin-top:1px;font-weight:300}
+.trigger-value{margin-left:auto;background:rgba(145,222,90,.12);color:var(--accent);font-size:11px;font-weight:800;padding:4px 10px;border-radius:50px;white-space:nowrap}
+.coverage-pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.05)}
+.pill{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.6);font-size:11px;padding:5px 13px;border-radius:50px}
+/* S4 */
+#s4{background:linear-gradient(150deg,#061a04 0%,#09200b 100%)}
+.proto-layout{display:grid;grid-template-columns:1fr 1fr;gap:60px;max-width:1000px;width:100%;align-items:center}
+.phone-wrap{display:flex;justify-content:center;position:relative}
+.phone{width:272px;height:556px;background:#0d0d0d;border-radius:44px;border:9px solid #222;box-shadow:0 48px 96px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.06),inset 0 0 0 1px rgba(255,255,255,.04);position:relative;overflow:hidden;flex-shrink:0}
+.phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:88px;height:26px;background:#0d0d0d;border-radius:0 0 20px 20px;z-index:10}
+.phone-screen{position:absolute;inset:0;border-radius:35px;overflow:hidden;background:#000}
+.phone-screen iframe{width:100%;height:100%;border:none;display:block;border-radius:35px}
+.phone-glow{position:absolute;inset:-28px;border-radius:60px;background:radial-gradient(ellipse at 50% 60%,rgba(145,222,90,.18) 0%,transparent 68%);pointer-events:none;z-index:-1}
+.proto-info h3{font-size:clamp(22px,3vw,32px);font-weight:800;color:#fff;margin-bottom:16px;line-height:1.3}
+.proto-info h3 em{color:var(--accent);font-style:normal}
+.proto-info p{color:rgba(255,255,255,.5);font-size:14px;line-height:1.85;margin-bottom:28px;font-weight:300}
+.proto-features{display:flex;flex-direction:column;gap:10px}
+.proto-feat{display:flex;align-items:center;gap:14px;padding:13px 16px;background:rgba(255,255,255,.03);border-radius:var(--radius);border:1px solid rgba(255,255,255,.06);transition:.2s}
+.proto-feat:hover{border-color:rgba(145,222,90,.2);background:rgba(145,222,90,.04)}
+.proto-feat-icon{font-size:18px}
+.proto-feat-text{font-size:13px;color:rgba(255,255,255,.65)}
+/* S5 */
+#s5{background:linear-gradient(150deg,#061a04 0%,#08200a 100%)}
+.market-layout{display:grid;grid-template-columns:1fr 1fr;gap:52px;max-width:980px;width:100%;align-items:center}
+.circles-wrap{position:relative;width:320px;height:320px;flex-shrink:0;margin:0 auto}
+.market-circle{position:absolute;border-radius:50%;opacity:0;transition:opacity .6s,transform .6s}
+.market-circle.show{opacity:1;transform:scale(1)!important}
+.mc-tam{width:320px;height:320px;top:0;left:0;background:rgba(145,222,90,.05);border:2px solid rgba(145,222,90,.18);transform:scale(.75)}
+.mc-sam{width:210px;height:210px;top:55px;left:55px;background:rgba(145,222,90,.09);border:2px solid rgba(145,222,90,.32);transform:scale(.75)}
+.mc-som{width:108px;height:108px;top:106px;left:106px;background:rgba(145,222,90,.22);border:2px solid var(--accent);transform:scale(.75)}
+.mc-chip{position:absolute;display:flex;flex-direction:column;align-items:flex-start;opacity:0;transition:opacity .7s;pointer-events:none}
+.mc-chip.show{opacity:1}
+.mc-chip-tag{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.mc-chip-val{font-size:15px;font-weight:800;color:#fff;line-height:1.1}
+.mc-chip-sub{font-size:10px;color:rgba(255,255,255,.38);margin-top:2px;font-weight:300}
+.chip-tam{top:-10px;left:-20px}
+.chip-sam{bottom:38px;left:-20px}
+.chip-som{bottom:80px;right:-24px;align-items:flex-end}
+.market-info{display:flex;flex-direction:column;gap:14px}
+.market-stat{padding:18px 22px;background:rgba(255,255,255,.03);border-radius:var(--radius);border-left:3px solid var(--accent);transition:.2s}
+.market-stat:hover{background:rgba(145,222,90,.04)}
+.market-stat h4{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.market-stat .big{font-size:28px;font-weight:800;color:#fff}
+.market-stat p{font-size:12px;color:rgba(255,255,255,.4);margin-top:3px;line-height:1.5;font-weight:300}
+.market-context{background:rgba(145,222,90,.07);border:1px solid rgba(145,222,90,.15);border-radius:var(--radius);padding:16px 20px}
+.market-context p{font-size:13px;color:rgba(255,255,255,.65);line-height:1.7;font-weight:300}
+/* S6 */
+#s6{background:linear-gradient(150deg,#061a04 0%,#08200a 100%)}
+.biz-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:940px;width:100%;margin-bottom:28px}
+.biz-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:24px;transition:.3s}
+.biz-card:hover{background:rgba(145,222,90,.05);border-color:rgba(145,222,90,.2);transform:translateY(-3px)}
+.biz-card-icon{font-size:26px;margin-bottom:12px}
+.biz-card h4{font-size:14px;font-weight:700;color:#fff;margin-bottom:7px}
+.biz-card p{font-size:13px;color:rgba(255,255,255,.45);line-height:1.65;font-weight:300}
+.biz-card .tag{display:inline-block;margin-top:12px;font-size:10px;font-weight:800;color:var(--dark);background:var(--accent);padding:3px 10px;border-radius:50px}
+.rev-rows{max-width:940px;width:100%;display:flex;flex-direction:column;gap:10px}
+.revenue-bar{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:14px 22px;display:flex;align-items:center;gap:20px}
+.rev-label{font-size:13px;color:rgba(255,255,255,.55);min-width:160px}
+.rev-track{flex:1;height:6px;background:rgba(255,255,255,.06);border-radius:50px;overflow:hidden}
+.rev-fill{height:100%;border-radius:50px;background:var(--accent);width:0;transition:width 1.2s ease}
+.rev-pct{font-size:12px;font-weight:800;color:var(--accent);min-width:36px;text-align:right}
+/* S7 */
+#s7{background:linear-gradient(150deg,#061a04 0%,#08200a 100%)}
+.comp-table{max-width:880px;width:100%;border-collapse:separate;border-spacing:0 4px}
+.comp-table th{padding:14px 20px;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);text-align:center;padding-bottom:18px}
+.comp-table th:first-child{text-align:left}
+.comp-table th.hl{color:var(--accent)}
+.comp-table tr td{padding:13px 20px;font-size:13px;color:rgba(255,255,255,.6);text-align:center;background:rgba(255,255,255,.02);transition:.2s}
+.comp-table tr td:first-child{text-align:left;font-weight:700;color:#fff;border-radius:8px 0 0 8px}
+.comp-table tr td:last-child{border-radius:0 8px 8px 0}
+.comp-table tr:hover td{background:rgba(255,255,255,.04)}
+.comp-table td.hl{background:rgba(145,222,90,.07)!important}
+.comp-table tr:hover td.hl{background:rgba(145,222,90,.12)!important}
+.check{color:var(--accent);font-size:17px;font-weight:800}
+.cross{color:#ff6b6b;opacity:.7;font-size:15px}
+.partial{color:#f59e0b;font-size:15px}
+.diff-sub{max-width:880px;width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.diff-pill{background:rgba(145,222,90,.06);border:1px solid rgba(145,222,90,.15);border-radius:var(--radius);padding:14px 18px;text-align:center}
+.diff-pill span{font-size:18px;display:block;margin-bottom:6px}
+.diff-pill p{font-size:12px;color:rgba(255,255,255,.55)}
+/* S8 */
+#s8{background:linear-gradient(150deg,#061a04 0%,#08200a 100%)}
+.traction-layout{display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:960px;width:100%}
+.timeline{display:flex;flex-direction:column;position:relative;padding-left:22px}
+.timeline::before{content:'';position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--accent),rgba(145,222,90,.1))}
+.tl-item{position:relative;padding-bottom:20px;opacity:0;transform:translateX(-8px);transition:.4s}
+.tl-item.visible{opacity:1;transform:none}
+.tl-dot{position:absolute;left:-22px;top:5px;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px rgba(145,222,90,.5)}
+.tl-date{font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--accent);text-transform:uppercase;margin-bottom:3px}
+.tl-text{font-size:14px;font-weight:700;color:#fff}
+.tl-sub{font-size:12px;color:rgba(255,255,255,.38);margin-top:2px;line-height:1.5;font-weight:300}
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.kpi-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:22px}
+.kpi-card h5{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px}
+.kpi-card .num{font-size:clamp(28px,3.5vw,40px);font-weight:800;color:#fff}
+.kpi-card .num span{color:var(--accent)}
+.kpi-card .trend{display:flex;align-items:center;gap:5px;margin-top:6px;font-size:11px;color:rgba(255, 255, 255, 0.73);font-weight:500}
+/* S9 */
+#s9{background:linear-gradient(150deg,#061a04 0%,#08200a 100%)}
+.finance-layout{display:grid;grid-template-columns:1.3fr 1fr;gap:36px;max-width:1000px;width:100%}
+.chart-wrap{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:24px}
+.chart-wrap h4{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:20px}
+.finance-cards{display:flex;flex-direction:column;gap:12px}
+.fin-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:18px 22px}
+.fin-card h5{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.fin-card .val{font-size:24px;font-weight:800;color:#fff}
+.fin-card p{font-size:11px;color:rgba(255,255,255,.35);margin-top:3px;font-weight:300}
+.fin-card.accent{background:rgba(145,222,90,.08);border-color:rgba(145,222,90,.2)}
+.break-even{background:rgba(145,222,90,.07);border:1px solid rgba(145,222,90,.18);border-radius:var(--radius);padding:14px 18px;display:flex;align-items:center;gap:12px}
+.break-even span{font-size:22px}
+.break-even-info h5{font-size:13px;font-weight:700;color:#fff}
+.break-even-info p{font-size:11px;color:rgba(255,255,255,.35);font-weight:300}
+/* S10 */
+#s10{background:var(--dark);overflow:hidden}
+#s10-bg{position:absolute;inset:0;pointer-events:none}
+.ask-orb1{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(145,222,90,.12) 0%,transparent 70%);top:-150px;left:-100px;animation:pulse 7s ease-in-out infinite}
+.ask-orb2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(145,222,90,.08) 0%,transparent 70%);bottom:-100px;right:-100px;animation:pulse 5s ease-in-out infinite;animation-delay:2s}
+.ask-content{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:56px;max-width:1000px;width:100%;align-items:center}
+.ask-left h2{font-size:clamp(28px,4.5vw,50px);font-weight:800;color:#fff;line-height:1.15;margin-bottom:18px}
+.ask-left h2 em{color:var(--accent);font-style:normal;display:block}
+.ask-left p{font-size:15px;color:rgba(255,255,255,.5);line-height:1.85;font-weight:300}
+.team-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:28px}
+.team-chip{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:50px;padding:7px 16px}
+.team-avatar{width:28px;height:28px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--dark)}
+.team-name{font-size:12px;color:rgba(255,255,255,.65)}
+.ask-box{background:rgba(255,255,255,.04);backdrop-filter:blur(16px);border:1px solid rgba(145,222,90,.2);border-radius:16px;padding:32px}
+.ask-amount{font-size:48px;font-weight:800;color:var(--accent);margin-bottom:4px}
+.ask-lbl{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:26px}
+.ask-items{display:flex;flex-direction:column}
+.ask-item{padding:13px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.ask-item:last-child{border:none}
+.ask-item-row{display:flex;justify-content:space-between;align-items:center}
+.ask-item-name{font-size:13px;color:rgba(255,255,255,.6)}
+.ask-item-val{font-size:13px;font-weight:800;color:#fff}
+.ask-bar{height:2px;background:rgba(145,222,90,.12);border-radius:50px;margin-top:7px;overflow:hidden}
+.ask-fill{height:100%;background:var(--accent);border-radius:50px}
+.final-cta{position:relative;z-index:2;text-align:center;margin-top:36px;color:rgba(255,255,255,.3);font-size:12px;font-weight:300}
+.final-cta strong{color:var(--accent);font-weight:700}
+</style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<div id="nav">
+  <button onclick="changeSlide(-1)">←</button>
+  <span id="slide-counter">1 / 10</span>
+  <button onclick="changeSlide(1)">→</button>
+</div>
+<div id="deck">
+
+<!-- S1 -->
+<div class="slide active" id="s1">
+  <div id="s1-bg"><div class="s1-orb orb1"></div><div class="s1-orb orb2"></div><div class="s1-orb orb3"></div></div>
+  <div class="s1-content">
+    <div>
+      <div class="logo-row">
+        <img src="logo_sem_naming.png" alt="Elementar Logo" style="height:48px;width:auto;object-fit:contain" onerror="this.style.cssText='height:48px;width:48px;background:rgba(145,222,90,.15);border:1.5px dashed #91DE5A;border-radius:10px;display:block'">
+        <div><div class="logo-text">Elementar</div><div class="logo-sub">Insurtech</div></div>
+      </div>
+      <h1 class="s1-headline">O clima mudou.<br><em id="typewriter-el"></em></h1>
+      <p class="s1-desc">A Elementar nasce para proteger o que é essencial: a vida, o patrimônio e o equilíbrio natural das empresas e pessoas.</p>
+      <div class="s1-badges"><span class="badge">Seguros Paramétricos</span><span class="badge">IA em Tempo Real</span><span class="badge">ClimaTech</span></div>
+    </div>
+    <div>
+      <div class="s1-cards-grid">
+        <div class="s1-card"><div class="s1-card-label">Mercado Endereçável</div><div class="s1-card-val">R$1.75bi</div><div class="s1-card-sub">Oportunidade direta de pessoas que precisam de proteção climática</div></div>
+        <div class="s1-card"><div class="s1-card-label">Lista de Adesão</div><div class="s1-card-val">4.2k+</div><div class="s1-card-sub">Clientes ativos projetados apenas para o primeiro mês</div></div>
+      </div>
+      <div class="s1-ticker">
+        <span class="s1-ticker-val" style="text-align:left">Zero burocracia</span>
+        <span class="s1-ticker-left" style="text-align:left;width:60%">Substituímos a reparação reativa pela antecipação proativa dos riscos climáticos</span>
+      </div>
+      <div class="s1-ticker" style="margin-top:10px">
+        <span class="s1-ticker-val" style="text-align:left">Monitoramento e<br>apoio contínuo</span>
+        <span class="s1-ticker-left" style="text-align:left;width:60%">Porque proteger é muito mais do que apenas indenizar</span>
+      </div>
+      <div class="typewriter-wrap"><span id="tw2"></span><span class="cursor">|</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- S2 -->
+<div class="slide" id="s2">
+  <div class="slide-header"><p class="slide-label">O Problema</p><h2 class="slide-title">A Nova Realidade<br><span>O clima mudou, e os riscos evoluíram</span></h2></div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-icon">🌡️</div><div class="stat-num" data-target="90" data-suffix="%">0%</div><div class="stat-desc">das comunidades já sentem as mudanças climáticas — 65% estão totalmente despreparadas para lidar com elas</div></div>
+    <div class="stat-card"><div class="stat-icon">💸</div><div class="stat-num" data-target="224" data-prefix="US$" data-suffix="bi">0</div><div class="stat-desc">em perdas econômicas por desastres naturais em 2025 — apenas 48% cobertos por seguro</div></div>
+    <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-num" data-target="30" data-suffix=" dias">0</div><div class="stat-desc">tempo médio para liquidação de sinistros no Brasil</div></div>
+  </div>
+  <div class="problem-quote"><div class="quote-mark">"</div><div><p>Eventos climáticos extremos triplicaram nas últimas três décadas. O modelo de seguro reativo deixou de fazer sentido.</p><cite>— Relatório Swiss Re Institute, 2024</cite></div></div>
+</div>
+
+<!-- S3 -->
+<div class="slide" id="s3">
+  <div class="slide-header" style="margin-bottom:28px"><p class="slide-label">A Solução</p><h2 class="slide-title">Da Reação para a <span>Antecipação</span></h2></div>
+  <div class="solution-layout">
+    <div>
+      <p style="font-size:14px;color:rgba(255,255,255,.5);line-height:1.85;font-weight:300;margin-bottom:4px">Sem sinistro, sem espera. Nossa inteligência artificial monitora o clima em tempo real e aciona sua cobertura e assistência automaticamente.</p>
+      <div class="flow-steps">
+        <div class="flow-step"><div class="step-num">1</div><div class="step-body"><h4>Vigilância Preditiva</h4><p>Prevemos eventos climáticos extremos com alta precisão, garantindo que sua empresa esteja sempre um passo à frente do risco.</p></div></div>
+        <div class="flow-step"><div class="step-num">2</div><div class="step-body"><h4>Gatilho Paramétrico</h4><p>O limite climático foi atingido? Nosso sistema inteligente reconhece a zona de risco e ativa sua proteção instantaneamente.</p></div></div>
+        <div class="flow-step"><div class="step-num">3</div><div class="step-body"><h4>Ação Imediata 360°</h4><p>No exato momento do impacto, liberamos indenização direta. Nós cuidamos da crise para você cuidar do essencial.</p></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="trigger-box">
+        <div class="trigger-title">Gatilhos Climáticos Paramétricos</div>
+        <div class="trigger-item"><div class="trigger-icon">🌧️</div><div class="trigger-info"><h5>Chuva Intensa</h5><p>Precipitação acumulada</p></div><span class="trigger-value">&gt; 80mm/24h</span></div>
+        <div class="trigger-item"><div class="trigger-icon">🔥</div><div class="trigger-info"><h5>Calor Extremo</h5><p>Temperatura máxima</p></div><span class="trigger-value">&gt; 39°C</span></div>
+        <div class="trigger-item"><div class="trigger-icon">💨</div><div class="trigger-info"><h5>Vento Destrutivo</h5><p>Velocidade do vento</p></div><span class="trigger-value">&gt; 90 km/h</span></div>
+        <div class="trigger-item"><div class="trigger-icon">❄️</div><div class="trigger-info"><h5>Geada Agrícola</h5><p>Temperatura mínima</p></div><span class="trigger-value">&lt; 2°C</span></div>
+        <div class="coverage-pills"><span class="pill">💰 Indenização Imediata</span><span class="pill">🚗 Voucher Mobilidade</span><span class="pill">🧠 Apoio Psicológico</span><span class="pill">🏨 Abrigo Temporário</span><span class="pill">🛠️ Assistência Técnica</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S4 PROTÓTIPO -->
+<div class="slide" id="s4">
+  <div class="slide-header" style="margin-bottom:28px">
+    <p class="slide-label">Protótipo</p>
+    <h2 class="slide-title">App <span>Elementar</span> — navegue ao vivo</h2>
+  </div>
+  <div class="proto-layout">
+    <div class="phone-wrap">
+      <div class="phone-glow"></div>
+      <div class="phone">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <iframe id="proto-iframe"></iframe>
+          <div id="map-overlay" style="position:absolute;left:0;right:0;top:36px;height:220px;z-index:5;display:none;overflow:hidden;">
+            <img src="map_app.png" alt="Mapa" style="width:100%;height:100%;object-fit:cover;display:block;">
+            <div style="position:absolute;top:8px;right:8px;background:rgba(4,35,0,.8);backdrop-filter:blur(6px);border:1px solid rgba(145,222,90,.3);border-radius:8px;padding:5px 10px;font-size:9px;font-weight:700;color:#91DE5A;font-family:'Almarai',sans-serif;">⚡ IA monitorando em tempo real</div>
+            <div style="position:absolute;bottom:8px;left:8px;display:flex;flex-direction:column;gap:3px;">
+              <div style="display:flex;align-items:center;gap:5px;background:rgba(0,0,0,0.55);border-radius:6px;padding:3px 7px;"><div style="width:7px;height:7px;border-radius:50%;background:#91DE5A;flex-shrink:0"></div><span style="font-size:9px;color:rgba(255,255,255,0.7);font-family:'Almarai',sans-serif;">Você — Segura</span></div>
+              <div style="display:flex;align-items:center;gap:5px;background:rgba(0,0,0,0.55);border-radius:6px;padding:3px 7px;"><div style="width:7px;height:7px;border-radius:50%;background:#E8A838;flex-shrink:0"></div><span style="font-size:9px;color:rgba(255,255,255,0.7);font-family:'Almarai',sans-serif;">Risco moderado</span></div>
+              <div style="display:flex;align-items:center;gap:5px;background:rgba(0,0,0,0.55);border-radius:6px;padding:3px 7px;"><div style="width:7px;height:7px;border-radius:50%;background:#D94F3D;flex-shrink:0"></div><span style="font-size:9px;color:rgba(255,255,255,0.7);font-family:'Almarai',sans-serif;">Atenção necessária</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="proto-info">
+      <h3>Proteção que age <em>por você.</em></h3>
+      <p>O app monitora riscos em tempo real, dispara alertas antecipados e processa indenizações automaticamente. Zero burocracia, zero espera.</p>
+      <div class="proto-features">
+        <div class="proto-feat"><div class="proto-feat-icon">📡</div><div class="proto-feat-text">Dashboard de risco climático em tempo real</div></div>
+        <div class="proto-feat"><div class="proto-feat-icon">🚨</div><div class="proto-feat-text">Acionamento Automático</div></div>
+        <div class="proto-feat"><div class="proto-feat-icon">📞</div><div class="proto-feat-text">Autoatendimento Digital e Suporte Híbrido</div></div>
+        <div class="proto-feat"><div class="proto-feat-icon">🔔</div><div class="proto-feat-text">Check-in Automático de Segurança</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S5 -->
+<div class="slide" id="s5">
+  <div class="slide-header"><p class="slide-label">Mercado</p><h2 class="slide-title">Uma oportunidade <span>gigante e inexplorada</span></h2></div>
+  <div class="market-layout">
+    <div style="display:flex;justify-content:center">
+      <div class="circles-wrap">
+        <div class="market-circle mc-tam"></div>
+        <div class="market-circle mc-sam"></div>
+        <div class="market-circle mc-som"></div>
+        <div class="mc-chip chip-tam">
+          <span class="mc-chip-tag">TAM</span>
+          <span class="mc-chip-val">R$ 92Bi</span>
+          <span class="mc-chip-sub">Mercado Global</span>
+        </div>
+        <div class="mc-chip chip-sam">
+          <span class="mc-chip-tag">SAM</span>
+          <span class="mc-chip-val">R$ 1.72Bi</span>
+          <span class="mc-chip-sub">Brasil + LATAM</span>
+        </div>
+        <div class="mc-chip chip-som">
+          <span class="mc-chip-tag">SOM</span>
+          <span class="mc-chip-val">R$ 175M</span>
+          <span class="mc-chip-sub">Ano 5</span>
+        </div>
+      </div>
+    </div>
+    <div class="market-info">
+      <div class="market-stat"><h4>TAM</h4><div class="big">R$ 92Bi</div><p>Mercado global de seguros paramétricos e climáticos</p></div>
+      <div class="market-stat" style="border-color:rgba(145,222,90,.5)"><h4>SAM</h4><div class="big">R$ 1.7Bi</div><p>Brasil e América Latina — agro, PMEs e pessoas físicas em risco</p></div>
+      <div class="market-stat" style="border-color:rgba(145,222,90,.9)"><h4>SOM</h4><div class="big">R$ 175M</div><p>Meta ano 5, capturando 1,1% do mercado latino-americano</p></div>
+      <div class="market-context"><p>📈 Brasil registrou <strong style="color:var(--accent)">R$ 15Bi em perdas agrícolas</strong> por eventos climáticos em 2023 — menos de 12% cobertos.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- S6 -->
+<div class="slide" id="s6">
+  <div class="slide-header"><p class="slide-label">Modelo de Negócio</p><h2 class="slide-title">Receita <span>diversificada e escalável</span></h2></div>
+  <div class="biz-grid">
+    <div class="biz-card"><div class="biz-card-icon">📋</div><h4>B2B — Empresas & Agro</h4><p>Contratos corporativos com indústrias, cooperativas e construtoras.</p><span class="tag">Receita Principal</span></div>
+    <div class="biz-card"><div class="biz-card-icon">🏢</div><h4>Prêmio Paramétrico</h4><p>Assinatura mensal ou anual baseada no perfil de risco, região e cobertura.</p><span class="tag">Alto Ticket</span></div>
+    <div class="biz-card"><div class="biz-card-icon">🔌</div><h4>API de Risco Climático</h4><p>Licenciamento de dados e modelos de risco para seguradoras e fintechs.</p><span class="tag">SaaS / Licença</span></div>
+  </div>
+  <div class="rev-rows">
+    <div class="revenue-bar"><span class="rev-label">Prêmio de Seguro</span><div class="rev-track"><div class="rev-fill" data-width="65%"></div></div><span class="rev-pct">65%</span></div>
+    <div class="revenue-bar"><span class="rev-label">Contratos B2B</span><div class="rev-track"><div class="rev-fill" data-width="25%"></div></div><span class="rev-pct">25%</span></div>
+    <div class="revenue-bar"><span class="rev-label">API & Licenças</span><div class="rev-track"><div class="rev-fill" data-width="10%"></div></div><span class="rev-pct">10%</span></div>
+  </div>
+</div>
+
+<!-- S7 -->
+<div class="slide" id="s7">
+  <div class="slide-header"><p class="slide-label">Diferencial Competitivo</p><h2 class="slide-title">Por que a <span>Elementar</span> vence</h2></div>
+  <table class="comp-table">
+    <thead><tr><th>Critério</th><th>Seguradoras Tradicionais</th><th>Insurtechs Genéricas</th><th class="hl">✦ Elementar</th></tr></thead>
+    <tbody>
+      <tr><td>Cobertura Paramétrica</td><td><span class="cross">✕</span></td><td><span class="partial">◑</span></td><td class="hl"><span class="check">✓</span></td></tr>
+      <tr><td>Pagamento Automático</td><td><span class="cross">✕</span></td><td><span class="cross">✕</span></td><td class="hl"><span class="check">✓</span></td></tr>
+      <tr><td>Monitoramento em Tempo Real</td><td><span class="cross">✕</span></td><td><span class="partial">◑</span></td><td class="hl"><span class="check">✓</span></td></tr>
+      <tr><td>Dados Proprietários de Risco</td><td><span class="cross">✕</span></td><td><span class="cross">✕</span></td><td class="hl"><span class="check">✓</span></td></tr>
+      <tr><td>Assistência 360° Automática</td><td><span class="cross">✕</span></td><td><span class="cross">✕</span></td><td class="hl"><span class="check">✓</span></td></tr>
+      <tr><td>Foco Climático Exclusivo</td><td><span class="cross">✕</span></td><td><span class="partial">◑</span></td><td class="hl"><span class="check">✓</span></td></tr>
+    </tbody>
+  </table>
+  <div class="diff-sub">
+    <div class="diff-pill"><span>🔒</span><p>Barreira tecnológica: modelo de risco proprietário</p></div>
+    <div class="diff-pill"><span>📊</span><p>Network effect: mais dados = melhor precificação</p></div>
+    <div class="diff-pill"><span>⚡</span><p>First mover no segmento climático B2B no Brasil</p></div>
+  </div>
+</div>
+
+<!-- S8 -->
+<div class="slide" id="s8">
+  <div class="slide-header"><p class="slide-label">Prova — Tração</p><h2 class="slide-title">Já estamos <span>em movimento</span></h2></div>
+  <div class="traction-layout">
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Lançamento</div><div class="tl-text">Go to Market</div><div class="tl-sub">Lançamento oficial da plataforma impulsionado pelo aporte inicial</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Ano 1</div><div class="tl-text">O Domínio B2B</div><div class="tl-sub">Consolidação do plano empresarial corporativo como o grande motor de receita</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Ano 3</div><div class="tl-text">O Ponto de Virada</div><div class="tl-sub">Superação do break-even e salto de lucratividade da operação</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Ano 4</div><div class="tl-text">Aceleração e Rede</div><div class="tl-sub">Manutenção de um hipercrescimento de 40% ao ano</div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Ano 5</div><div class="tl-text">O Oceano Azul Dominado</div><div class="tl-sub">Conquista da liderança do setor com a marca histórica de 1,79M de clientes ativamente protegidos</div></div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card"><h5>EXPLOSÃO DE DEMANDA</h5><div class="num"><span class="counter" data-target="4266">0</span></div><div class="trend">Conquistaremos mais de quatro mil clientes ativos logo no primeiro mês de operação</div></div>
+      <div class="kpi-card"><h5>VALIDAÇÃO FINANCEIRA</h5><div class="num"><span class="counter" data-target="5" data-prefix="R$" data-suffix="M">0</span><span style="font-size:22px;color:var(--accent)"></span></div><div class="trend">Alcançaremos um faturamento bruto no Ano 1</div></div>
+      <div class="kpi-card"><h5>LEALDADE ABSOLUTA</h5><div class="num"><span class="counter" data-target="6.5" data-suffix="%">0</span></div><div class="trend">Projetamos uma taxa de cancelamento mínima, provando que nosso sistema se tornará uma infraestrutura de proteção essencial</div></div>
+      <div class="kpi-card"><h5>RENTABILIDADE ESTELAR</h5><div class="num"><span class="counter" data-target="327" data-suffix="%">0</span><span style="font-size:18px;color:var(--accent)"></span></div><div class="trend">Entregaremos uma Taxa Interna de Retorno ao ano que atesta a nossa eficiência na multiplicação do capital investido</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S9 -->
+<div class="slide" id="s9">
+  <div class="slide-header"><p class="slide-label">Finanças & Projeções</p><h2 class="slide-title">Caminho para <span>R$ 52M ARR</span></h2></div>
+  <div class="finance-layout">
+    <div><div class="chart-wrap"><h4>Receita Anual Recorrente (R$ Milhões)</h4><canvas id="revenueChart" height="210"></canvas></div></div>
+    <div class="finance-cards">
+      <div class="fin-card accent"><h5>ARR — Ano 5</h5><div class="val">R$ 1.32Bi</div><p>28.000 apólices ativas + contratos B2B</p></div>
+      <div class="fin-card"><h5>Ticket Médio</h5><div class="val">R$ 98/mês</div><p>Plano Essencial B2B</p></div>
+      <div class="fin-card"><h5>CAC Projetado</h5><div class="val">R$ 19,20</div><p>via efeitos de rede, parcerias governamentais e vendas em lote</p></div>
+      <div class="fin-card"><h5>LTV / CAC</h5><div class="val">15×</div><p>LTV médio R$ 2.680 · Churn 6% a.a.</p></div>
+      <div class="break-even"><span>🎯</span><div class="break-even-info"><h5>Break-even operacional: Mês 28</h5><p>Atingiremos o break-even sustentados pela captação atual somada à previsibilidade do nosso crescimento orgânico via MOUs</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S10 -->
+<div class="slide" id="s10">
+  <div id="s10-bg"><div class="ask-orb1"></div><div class="ask-orb2"></div></div>
+  <div class="ask-content">
+    <div class="ask-left">
+      <h2>Vamos proteger <em>o que é essencial.</em></h2>
+      <p>Estamos captando nossa rodada pré-seed para acelerar o go-to-market, expandir o modelo de dados e fechar os primeiros contratos B2B.</p>
+      <div class="team-row">
+        <div class="team-chip"><div class="team-avatar">BT</div><span class="team-name">Beatriz Tome — CEO</span></div>
+        <div class="team-chip"><div class="team-avatar">LK</div><span class="team-name">Luis Kalil — CTO</span></div>
+        <div class="team-chip"><div class="team-avatar">JC</div><span class="team-name">João Carvalho — CFO</span></div>
+        <div class="team-chip"><div class="team-avatar">JT</div><span class="team-name">João Teodório — COO</span></div>
+      </div>
+      <div style="margin-top:24px;background:rgba(145,222,90,.07);border:1px solid rgba(145,222,90,.15);border-radius:12px;padding:18px 22px">
+        <p style="font-size:14px;color:rgba(255,255,255,.6);line-height:1.85;font-weight:300">Buscamos parceiros que acreditem que <strong style="color:var(--accent)">proteger o futuro é o negócio mais inteligente.</strong></p>
+      </div>
+    </div>
+    <div class="ask-box">
+      <div class="ask-amount">R$ 2M</div>
+      <div class="ask-lbl">Rodada Pré-Seed · Equity</div>
+      <div class="ask-items">
+        <div class="ask-item"><div class="ask-item-row"><span class="ask-item-name">Tecnologia & Dados</span><span class="ask-item-val">R$ 700k</span></div><div class="ask-bar"><div class="ask-fill" style="width:35%"></div></div></div>
+        <div class="ask-item"><div class="ask-item-row"><span class="ask-item-name">Go-to-Market & Growth</span><span class="ask-item-val">R$ 500k</span></div><div class="ask-bar"><div class="ask-fill" style="width:25%"></div></div></div>
+        <div class="ask-item"><div class="ask-item-row"><span class="ask-item-name">Regulatório & Compliance</span><span class="ask-item-val">R$ 400k</span></div><div class="ask-bar"><div class="ask-fill" style="width:20%"></div></div></div>
+        <div class="ask-item"><div class="ask-item-row"><span class="ask-item-name">Equipe & Operações</span><span class="ask-item-val">R$ 400k</span></div><div class="ask-bar"><div class="ask-fill" style="width:20%"></div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="final-cta">
+    <img src="logo_sem_naming.png" alt="Elementar Logo" style="height:18px;width:auto;vertical-align:middle;margin-right:6px;object-fit:contain" onerror="this.style.display='none'">
+    <strong>Elementar</strong> · elementar.com.br · contato@elementar.com.br · <strong>TCC — FIAP 2026</strong>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<script>
+(function() {
+  var appHtml = [
+    '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">',
+    '<meta name="viewport" content="width=device-width,initial-scale=1">',
+    '<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&display=swap" rel="stylesheet">',
+    '<style>',
+    '*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}',
+    ':root{--dark:#042300;--primary:#91DE5A;--aux:#828282;--bg:#F5F3EF;--card:#fff;--text:#042300;--border:#E3DFD6;--red:#D94F3D;--yellow:#E8A838;--green:#3DA65A}',
+    'html,body{width:100%;height:100%;overflow:hidden;font-family:Almarai,sans-serif;background:var(--dark)}',
+    '.scr{position:absolute;inset:0;overflow:hidden;display:none;flex-direction:column;background:var(--bg)}',
+    '.scr.on{display:flex}',
+    '.sb{height:36px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;flex-shrink:0;font-size:11px;font-weight:700;color:#fff;position:absolute;top:0;left:0;right:0;z-index:30}',
+    '#ob{background:var(--dark)}',
+    '.obs{display:flex;width:400%;height:100%;transition:transform .4s cubic-bezier(.4,0,.2,1)}',
+    '.osl{width:25%;height:100%;display:flex;flex-direction:column;padding:0 22px 36px;position:relative}',
+    '.oart{flex:1;display:flex;align-items:center;justify-content:center}',
+    '.ods{display:flex;gap:5px;margin-bottom:16px;justify-content:center}',
+    '.od{width:5px;height:5px;border-radius:3px;background:rgba(255,255,255,.2);transition:.3s}',
+    '.od.on{width:16px;background:var(--primary)}',
+    '.otit{font-size:20px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:7px}',
+    '.osub{font-size:11px;color:rgba(255,255,255,.45);line-height:1.6;margin-bottom:18px}',
+    '.obtn{width:100%;padding:13px;background:var(--primary);color:var(--dark);border:none;border-radius:13px;font-size:13px;font-weight:800;font-family:Almarai,sans-serif;cursor:pointer}',
+    '.ogh{width:100%;padding:9px;background:transparent;color:rgba(255,255,255,.3);border:none;font-size:11px;font-family:Almarai,sans-serif;cursor:pointer;margin-top:5px}',
+    '.oskip{position:absolute;top:42px;right:22px;font-size:10px;color:rgba(255,255,255,.3);cursor:pointer;border:none;background:none;font-family:Almarai,sans-serif}',
+    '#hm{background:var(--bg)}',
+    '.hh{background:var(--dark);padding:14px 16px 20px;border-radius:0 0 22px 22px;flex-shrink:0}',
+    '.htop{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}',
+    '.hgr{font-size:10px;color:rgba(255,255,255,.4);margin-bottom:1px}',
+    '.hnm{font-size:15px;font-weight:800;color:#fff}',
+    '.hav{width:34px;height:34px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--dark)}',
+    '.wb{background:rgba(255,255,255,.06);border-radius:11px;padding:9px 12px;display:flex;align-items:center;gap:9px}',
+    '.wi{font-size:20px}.wt h3{font-size:8px;font-weight:700;color:#fff;margin-bottom:1px}.wt p{font-size:9px;color:rgba(255,255,255,.35)}',
+    '.spill{margin-left:auto;padding:3px 9px;border-radius:20px;font-size:8px;font-weight:700}',
+    '.sok{background:rgba(61,166,90,.2);color:#5fd47a}',
+    '.hb{flex:1;overflow-y:auto;padding:12px 12px 85px}',
+    '.st{font-size:8px;font-weight:700;color:var(--aux);letter-spacing:1px;text-transform:uppercase;margin-bottom:9px}',
+    '.sg{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:16px}',
+    '.sc{background:var(--card);border-radius:13px;padding:11px;border:1px solid var(--border);cursor:pointer}',
+    '.si{font-size:16px;margin-bottom:5px}.sl{font-size:10px;font-weight:700;color:var(--text);margin-bottom:2px;line-height:1.3}.ss{font-size:8px;color:var(--aux)}',
+    '.sc.ac{background:var(--dark)}.sc.ac .sl{color:#91DE5A}.sc.ac .ss{color:rgba(255,255,255,.4)}',
+    '.alc{background:var(--card);border-radius:11px;padding:10px;margin-bottom:7px;border:1px solid var(--border);display:flex;gap:8px;align-items:flex-start;cursor:pointer}',
+    '.ald{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:3px}',
+    '.alt h4{font-size:10px;font-weight:700;color:var(--text);margin-bottom:1px}.alt p{font-size:9px;color:var(--aux);line-height:1.4}',
+    '.altm{font-size:8px;color:var(--aux);margin-left:auto;white-space:nowrap;flex-shrink:0}',
+    '.sfab{position:absolute;bottom:78px;right:12px;width:46px;height:46px;border-radius:50%;background:var(--red);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 5px 16px rgba(217,79,61,.4);z-index:50;animation:sfa 2.5s ease-in-out infinite}',
+    '@keyframes sfa{0%,100%{box-shadow:0 5px 16px rgba(217,79,61,.4)}50%{box-shadow:0 5px 26px rgba(217,79,61,.7)}}',
+    '#mn{background:var(--bg)}',
+    '.ma{background:var(--dark);height:220px;flex-shrink:0;position:relative;overflow:hidden}',
+    '#map{position:absolute;inset:0;width:100%;height:100%;z-index:0}',
+    '.al2{flex:1;overflow-y:auto;padding:10px 12px 85px}',
+    '.ar{background:var(--card);border-radius:11px;padding:10px 12px;margin-bottom:7px;border-left:3px solid;border-right:1px solid var(--border);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}',
+    '.ar h4{font-size:10px;font-weight:700;color:var(--text);margin-bottom:2px}.ar p{font-size:9px;color:var(--aux);line-height:1.4}.ar small{font-size:8px;color:var(--aux);display:block;margin-top:2px}',
+    '#ac{background:var(--bg)}',
+    '.ach{padding:14px 16px 10px;flex-shrink:0}',
+    '.act{font-size:17px;font-weight:800;color:var(--text)}.acs{font-size:10px;color:var(--aux);margin-top:1px}',
+    '.acb{flex:1;overflow-y:auto;padding:0 12px 85px}',
+    '.acc{background:var(--card);border-radius:16px;padding:14px;margin-bottom:10px;border:1px solid var(--border)}',
+    '.acc.pr{background:var(--dark)}',
+    '.acst{display:flex;align-items:center;gap:6px;margin-bottom:10px}',
+    '.acbg{padding:3px 9px;border-radius:20px;font-size:8px;font-weight:700}',
+    '.actp{font-size:8px;color:var(--aux);margin-left:auto}',
+    '.acc h3{font-size:13px;font-weight:800;color:var(--text);margin-bottom:4px}.acc.pr h3{color:#fff}',
+    '.acc p{font-size:10px;color:var(--aux);line-height:1.5;margin-bottom:10px}.acc.pr p{color:rgba(255,255,255,.4)}',
+    '.plbl{display:flex;justify-content:space-between;font-size:8px;color:var(--aux);margin-bottom:4px}',
+    '.pt{height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}',
+    '.pf{height:100%;border-radius:2px;background:var(--primary);animation:pfa 2s ease-out forwards}@keyframes pfa{from{width:0}}',
+    '.acv{font-size:16px;font-weight:800;color:var(--primary);margin-top:5px}',
+    '.acv small{font-size:10px;font-weight:400;color:rgba(255,255,255,.4)}',
+    '.tll{border-left:2px solid var(--border);padding-left:10px;margin-top:10px}',
+    '.tli{position:relative;margin-bottom:7px;padding-bottom:7px}',
+    '.tld{width:6px;height:6px;border-radius:50%;position:absolute;left:-14px;top:2px}',
+    '.tldn{background:var(--primary)}.tlpn{background:var(--border)}',
+    '.tli h5{font-size:9px;font-weight:700;color:#fff;margin-bottom:1px}.tli p{font-size:8px;color:rgba(255,255,255,.35)}',
+    '#ap{background:var(--bg)}',
+    '.aph{background:var(--dark);padding:18px 16px;border-radius:0 0 22px 22px;flex-shrink:0}',
+    '.aph h2{font-size:16px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:3px}.aph p{font-size:10px;color:rgba(255,255,255,.35)}',
+    '.apb{flex:1;overflow-y:auto;padding:12px 12px 85px}',
+    '.ctc{background:var(--card);border-radius:14px;padding:12px;margin-bottom:9px;border:1px solid var(--border);display:flex;gap:10px;align-items:center;cursor:pointer}',
+    '.cti{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}',
+    '.ctin h4{font-size:11px;font-weight:800;color:var(--text);margin-bottom:2px}.ctin p{font-size:9px;color:var(--aux);line-height:1.4}',
+    '.ctin span{font-size:8px;font-weight:700;display:inline-block;margin-top:3px;padding:2px 6px;border-radius:20px}',
+    '.ctar{margin-left:auto;color:var(--aux);font-size:14px;flex-shrink:0}',
+    '.bn{position:absolute;bottom:0;left:0;right:0;height:70px;background:var(--card);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;padding-bottom:10px;z-index:40}',
+    '.ni{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:5px 10px;border:none;background:none;font-family:Almarai,sans-serif}',
+    '.ni svg{width:17px;height:17px;stroke:var(--aux);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:.15s}',
+    '.ni span{font-size:8px;color:var(--aux);font-weight:700}',
+    '.ni.on svg{stroke:var(--dark)}.ni.on span{color:var(--dark)}',
+    '.nd{width:3px;height:3px;border-radius:50%;background:var(--primary);display:none;margin-top:-1px}',
+    '.ni.on .nd{display:block}',
+    '#cd{background:var(--dark)}',
+    '.cdh{padding:14px 18px 0;flex-shrink:0}',
+    '.cdbk{background:rgba(255,255,255,.08);border:none;color:#fff;font-size:16px;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%}',
+    '.cdst{display:flex;gap:4px;margin:12px 18px 0}',
+    '.cds{flex:1;height:2px;border-radius:2px;background:rgba(255,255,255,.1)}',
+    '.cds.dn{background:var(--primary)}.cds.ac{background:var(--primary);opacity:.5}',
+    '.cdb{flex:1;padding:18px 18px;overflow-y:auto}',
+    '.cdl{font-size:8px;font-weight:700;color:rgba(255,255,255,.3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}',
+    '.cdbg{font-size:18px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:4px}',
+    '.cdh2{font-size:10px;color:rgba(255,255,255,.35);margin-bottom:18px}',
+    '.fl{margin-bottom:11px}.fl label{display:block;font-size:9px;color:rgba(255,255,255,.35);margin-bottom:5px;font-weight:700;letter-spacing:.5px}',
+    '.fl input{width:100%;padding:10px 12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:9px;color:#fff;font-size:12px;font-family:Almarai,sans-serif;outline:none}',
+    '.fl input:focus{border-color:var(--primary)}',
+    '.plc{border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:12px;margin-bottom:9px;cursor:pointer;position:relative}',
+    '.plc.sl{border-color:var(--primary);background:rgba(145,222,90,.05)}',
+    '.plbg{position:absolute;top:8px;right:8px;background:var(--primary);color:var(--dark);font-size:7px;font-weight:800;padding:2px 6px;border-radius:20px}',
+    '.pln{font-size:12px;font-weight:800;color:#fff;margin-bottom:2px}',
+    '.plp{font-size:10px;color:var(--primary);font-weight:700;margin-bottom:7px}',
+    '.pli{list-style:none}.pli li{font-size:9px;color:rgba(255,255,255,.4);padding:1px 0;display:flex;gap:4px;align-items:center}',
+    '.pli li::before{content:"✓";color:var(--primary);font-weight:800;flex-shrink:0}',
+    '.cdf{padding:10px 18px 22px;flex-shrink:0}',
+    '.bp{width:100%;padding:13px;background:var(--primary);color:var(--dark);border:none;border-radius:13px;font-size:13px;font-weight:800;font-family:Almarai,sans-serif;cursor:pointer}',
+    '#sm{position:absolute;inset:0;background:rgba(4,35,0,.95);display:none;flex-direction:column;z-index:100;align-items:center;justify-content:center;padding:26px}',
+    '#sm.on{display:flex}',
+    '.san{width:70px;height:70px;border-radius:50%;background:rgba(217,79,61,.15);display:flex;align-items:center;justify-content:center;margin-bottom:16px;animation:srn 1.5s ease-in-out infinite}',
+    '@keyframes srn{0%,100%{box-shadow:0 0 0 0 rgba(217,79,61,.4)}70%{box-shadow:0 0 0 18px rgba(217,79,61,0)}}',
+    '.sin{width:46px;height:46px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:20px}',
+    '.smt{font-size:18px;font-weight:800;color:#fff;text-align:center;margin-bottom:5px}',
+    '.sms{font-size:11px;color:rgba(255,255,255,.4);text-align:center;margin-bottom:20px;line-height:1.5}',
+    '.sop{width:100%;display:flex;flex-direction:column;gap:7px}',
+    '.so{width:100%;padding:12px;border-radius:13px;font-size:11px;font-weight:800;font-family:Almarai,sans-serif;cursor:pointer;border:none;text-align:left}',
+    '.so1{background:var(--red);color:#fff}.so2,.so3{background:rgba(255,255,255,.07);color:#fff}',
+    '.scl{margin-top:12px;background:none;border:none;color:rgba(255,255,255,.25);font-size:10px;cursor:pointer;font-family:Almarai,sans-serif}',
+    '</style></head><body>',
+    '<div class="sb"><span style="font-size:12px;font-weight:800">9:41</span><div style="display:flex;gap:5px;align-items:center"><svg width="12" height="10" fill="#fff" viewBox="0 0 16 12"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="2" width="3" height="10" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/></svg><svg width="20" height="10" viewBox="0 0 25 12" fill="none"><rect x=".5" y=".5" width="21" height="11" rx="2.5" stroke="#fff" stroke-opacity=".4"/><rect x="22.5" y="4" width="2" height="4" rx="1" fill="#fff" fill-opacity=".4"/><rect x="1.5" y="1.5" width="17" height="9" rx="1.5" fill="#fff"/></svg></div></div>',
+    /* ONBOARDING (hidden by default — switched to home via postMessage on load) */
+    '<div class="scr" id="ob">',
+    '<button class="oskip" id="oskip">Pular</button>',
+    '<div class="obs" id="obs">',
+    '<div class="osl" style="background:var(--dark)"><div class="oart"><svg width="90" height="90" viewBox="0 0 120 120" fill="none"><ellipse cx="60" cy="60" rx="48" ry="27" stroke="#91DE5A" stroke-width="1.5"/><ellipse cx="60" cy="60" rx="27" ry="48" stroke="#91DE5A" stroke-width="1.5"/><ellipse cx="60" cy="60" rx="48" ry="27" stroke="#91DE5A" stroke-width="1.5" transform="rotate(60 60 60)"/><circle cx="60" cy="60" r="6" fill="#91DE5A"/></svg></div>',
+    '<div class="ods" id="ods"><div class="od on"></div><div class="od"></div><div class="od"></div><div class="od"></div></div>',
+    '<div class="otit">Proteção antes da tempestade</div><div class="osub">O único seguro que age antes do desastre acontecer.</div>',
+    '<button class="obtn" onclick="obn()">Conhecer a Elementar</button><button class="ogh"></button></div>',
+    '<div class="osl" style="background:#0a3818"><div class="oart"><svg width="150" height="120" viewBox="0 0 200 160" fill="none"><rect x="20" y="30" width="160" height="100" rx="14" fill="rgba(145,222,90,0.06)" stroke="rgba(145,222,90,0.2)" stroke-width="1"/><circle cx="130" cy="68" r="18" fill="rgba(145,222,90,0.08)" stroke="#91DE5A" stroke-width="1"/><text x="130" y="73" text-anchor="middle" font-size="14" fill="#91DE5A">🤖</text></svg></div>',
+    '<div class="ods"><div class="od"></div><div class="od on"></div><div class="od"></div><div class="od"></div></div>',
+    '<div class="otit">IA monitora o clima</div><div class="osub">Prevemos inundações antes de acontecerem.</div>',
+    '<button class="obtn" onclick="obn()">Continuar</button><button class="ogh" onclick="obn()"></button></div>',
+    '<div class="osl" style="background:var(--dark)"><div class="oart"><svg width="90" height="90" viewBox="0 0 120 120" fill="none"><circle cx="60" cy="60" r="46" fill="rgba(145,222,90,0.08)"/><text x="60" y="75" text-anchor="middle" font-size="46">🌱</text></svg></div>',
+    '<div class="ods"><div class="od"></div><div class="od"></div><div class="od on"></div><div class="od"></div></div>',
+    '<div class="otit">Proteger é preservar</div><div class="osub">Apoio, indenização e alertas integrados.</div>',
+    '<button class="obtn" onclick="gs(\'hm\')">Entrar no app</button><button class="ogh"></button></div>',
+    '<div class="osl" style="background:var(--dark)"><div class="oart"></div>',
+    '<div class="ods"><div class="od"></div><div class="od"></div><div class="od"></div><div class="od on"></div></div>',
+    '<div class="otit">Tudo pronto</div><div class="osub">Bem-vinda, Maria.</div>',
+    '<button class="obtn" onclick="gs(\'hm\')">Acessar minha conta</button><button class="ogh"></button></div>',
+    '</div></div>',
+    /* CADASTRO */
+    '<div class="scr" id="cd"><div style="height:36px;background:var(--dark);flex-shrink:0"></div>',
+    '<div class="cdh"><button class="cdbk" onclick="gs(\'ob\')">←</button>',
+    '<div class="cdst" id="cdst"><div class="cds dn"></div><div class="cds ac"></div><div class="cds"></div><div class="cds"></div></div></div>',
+    '<div class="cdb" id="cdb">',
+    '<div id="cs1"><div class="cdl">PASSO 1 DE 4</div><div class="cdbg">Vamos começar</div><div class="cdh2">Prometemos não pedir mais do que o necessário.</div>',
+    '<div class="fl"><label>SEU NOME</label><input value="Maria Santos"></div>',
+    '<div class="fl"><label>E-MAIL</label><input value="maria.santos@vale.com.br"></div>',
+    '<div class="fl"><label>CELULAR</label><input value="(11) 9 8765-4321"></div>',
+    '<div class="fl"><label>CPF</label><input value="123.456.789-00"></div></div>',
+    '<div id="cs2" style="display:none"><div class="cdl">PASSO 2 DE 4</div><div class="cdbg">Onde você mora?</div><div class="cdh2">Monitoramos os riscos da sua região.</div>',
+    '<div class="fl"><label>CEP</label><input value="09090-000"></div>',
+    '<div class="fl"><label>CIDADE</label><input value="São Bernardo do Campo"></div>',
+    '<div class="fl"><label>BAIRRO</label><input value="Jardim do Mar"></div></div>',
+    '<div id="cs3" style="display:none"><div class="cdl">PASSO 3 DE 4</div><div class="cdbg">Escolha seu plano</div><div class="cdh2">Seu empregador contribui com parte do valor.</div>',
+    '<div class="plc" onclick="sp(this)"><div class="pln">🌱 Plano Essencial</div><div class="plp">R$ 0 / mês</div><ul class="pli"><li>Alertas por IA</li><li>Indenização até R$ 3.000</li></ul></div>',
+    '<div class="plc sl" onclick="sp(this)"><div class="plbg">RECOMENDADO</div><div class="pln">🛡️ Proteção Total</div><div class="plp">+ R$ 29,90 / mês</div><ul class="pli"><li>Tudo do Essencial</li><li>Apoio psicológico 24h</li><li>Indenização até R$ 15.000</li></ul></div></div>',
+    '<div id="cs4" style="display:none"><div class="cdl">PASSO 4 DE 4</div><div class="cdbg">Tudo pronto! 🎉</div><div class="cdh2">Revise e confirme para ativar.</div>',
+    '<div style="background:rgba(145,222,90,0.08);border:1px solid rgba(145,222,90,0.2);border-radius:12px;padding:14px;margin-bottom:12px">',
+    '<div style="display:flex;justify-content:space-between;margin-bottom:7px"><span style="font-size:10px;color:rgba(255,255,255,.4)">Titular</span><span style="font-size:10px;color:#fff;font-weight:700">Maria Santos</span></div>',
+    '<div style="display:flex;justify-content:space-between"><span style="font-size:10px;color:rgba(255,255,255,.4)">Plano</span><span style="font-size:10px;color:#91DE5A;font-weight:700">Proteção Total</span></div></div></div>',
+    '</div><div class="cdf"><button class="bp" id="cdbtn" onclick="cdn()">Continuar</button></div></div>',
+    /* HOME */
+    '<div class="scr on" id="hm">',
+    '<div style="height:36px;background:var(--dark);flex-shrink:0"></div>',
+    '<div class="hh"><div class="htop"><div><div class="hgr">Bom dia 🌤️</div><div class="hnm">Maria Santos</div></div><div class="hav">MS</div></div>',
+    '<div class="wb"><div class="wi">⛅</div><div class="wt"><h3>São Bernardo do Campo</h3><p>Tudo tranquilo agora</p></div><div class="spill sok">● Segura</div></div></div>',
+    '<div class="hb">',
+    '<div style="background:rgba(232,168,56,.08);border:1px solid rgba(232,168,56,.25);border-radius:12px;padding:10px 12px;margin-bottom:14px;display:flex;gap:7px;align-items:flex-start">',
+    '<div style="font-size:14px">⚠️</div><div><div style="font-size:8px;font-weight:700;color:#E8A838;margin-bottom:1px">PREVISÃO DA ELEMENTAR</div>',
+    '<div style="font-size:10px;color:var(--text);font-weight:700;margin-bottom:2px">Chuva intensa prevista amanhã</div>',
+    '<div style="font-size:9px;color:var(--aux);line-height:1.4">Risco de alagamento detectado. Assistência de prontidão.</div></div></div>',
+    '<div class="st">Seus serviços ativos</div>',
+    '<div class="sg">',
+    '<div class="sc ac" onclick="nt(\'mn\',this)"><div class="si">🛰️</div><div class="sl" style="color:#91DE5A">Monitoramento</div><div class="ss">IA ativa</div></div>',
+    '<div class="sc" onclick="nt(\'ac\',this)"><div class="si">⚡</div><div class="sl">Proteção</div><div class="ss">1 em andamento</div></div>',
+    '<div class="sc" onclick="nt(\'ap\',this)"><div class="si">🧠</div><div class="sl">Apoio 24h</div><div class="ss">Psicólogo disponível</div></div>',
+    '<div class="sc"><div class="si">📋</div><div class="sl">Meu plano</div><div class="ss">Proteção Total</div></div></div>',
+    '<div class="st">Últimos alertas</div>',
+    '<div class="alc"><div class="ald" style="background:#3DA65A"></div><div class="alt"><h4>Situação normalizada</h4><p>Chuva passou sem impacto</p></div><div class="altm">2h</div></div>',
+    '<div class="alc"><div class="ald" style="background:#E8A838"></div><div class="alt"><h4>Voucher liberado</h4><p>Chuva 12/06 — R$ 120 disponíveis</p></div><div class="altm">3d</div></div>',
+    '</div>',
+    '<button class="sfab" onclick="oS()">🛡️</button>',
+    '<div class="bn">',
+    '<button class="ni on" onclick="nt(\'hm\',this)"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Início</span><div class="nd"></div></button>',
+    '<button class="ni" onclick="nt(\'mn\',this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h3M19 12h3M12 2v3M12 19v3"/><circle cx="12" cy="12" r="3"/></svg><span>Clima</span><div class="nd"></div></button>',
+    '<button class="ni" onclick="nt(\'ac\',this)"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>Proteções</span><div class="nd"></div></button>',
+    '<button class="ni" onclick="nt(\'ap\',this)"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Apoio</span><div class="nd"></div></button>',
+    '</div></div>',
+    /* MONITOR */
+    '<div class="scr" id="mn">',
+    '<div style="height:36px;background:var(--dark);flex-shrink:0"></div>',
+    /* MAP PLACEHOLDER */
+    '<div class="ma" style="position:relative;overflow:hidden;background:#0a1a0a;">',
+    '</div>',
+    '<\/script>',
+    '<div class="al2">',
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div class="st" style="margin:0">Alertas ativos</div><div style="font-size:8px;color:var(--aux)">Agora</div></div>',
+    '<div class="ar" style="border-left-color:#E8A838"><h4>⚠️ Chuva intensa prevista — amanhã</h4><p>Precipitação acima de 80mm prevista. Assistência de prontidão.</p><small>IA Elementar + INMET · 12 min</small></div>',
+    '<div class="ar" style="border-left-color:#D94F3D"><h4>🔴 Risco de alagamento — Região ABC</h4><p>Alerta da Defesa Civil. Evite ruas de baixada.</p><small>Defesa Civil SP · 1h</small></div>',
+    '<div class="ar" style="border-left-color:#3DA65A"><h4>✅ Situação estabilizada — Diadema</h4><p>Chuva de ontem passou sem impactos.</p><small>IA Elementar · Ontem</small></div>',
+    '</div>',
+    '<div class="bn">',
+    '<button class="ni" onclick="nt(\'hm\',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Início</span><div class="nd"></div></button>',
+    '<button class="ni on" onclick="nt(\'mn\',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h3M19 12h3M12 2v3M12 19v3"/><circle cx="12" cy="12" r="3"/></svg><span>Clima</span><div class="nd"></div></button>',
+    '<button class="ni" onclick="nt(\'ac\',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>Proteções</span><div class="nd"></div></button>',
+    '<button class="ni" onclick="nt(\'ap\',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Apoio</span><div class="nd"></div></button>',
+    '</div></div>',
+    /* ACIONAMENTOS */
+    '<div class="scr" id="ac">',
+    '<div style="height:36px;background:var(--bg);flex-shrink:0"></div>',
+    '<div class="ach"><div class="act">Minhas proteções</div><div class="acs">Acionamentos automáticos</div></div>',
+    '<div class="acb">',
+    '<div class="acc pr">',
+    '<div class="acst"><div class="acbg" style="background:rgba(145,222,90,.15);color:#91DE5A">● Processando</div><div class="actp" style="color:rgba(255,255,255,.3)">Automático · IA</div></div>',
+    '<h3>Chuva intensa — 12/06</h3><p>Evento detectado. Indenização sendo processada automaticamente.</p>',
+    '<div><div class="plbl"><span style="color:rgba(255,255,255,.4)">Progresso</span><span style="color:#91DE5A;font-weight:700">75%</span></div><div class="pt"><div class="pf" style="width:75%"></div></div></div>',
+    '<div class="acv">R$ 450,00 <small>em breve</small></div>',
+    '<div class="tll">',
+    '<div class="tli"><div class="tld tldn"></div><h5>Evento detectado pela IA</h5><p>12/06 às 14h32</p></div>',
+    '<div class="tli"><div class="tld tldn"></div><h5>Cobertura ativada automaticamente</h5><p>Sem nenhuma ação sua</p></div>',
+    '<div class="tli"><div class="tld tldn"></div><h5>Voucher de transporte liberado</h5><p>R$ 120 disponíveis</p></div>',
+    '<div class="tli"><div class="tld tlpn"></div><h5 style="color:rgba(255,255,255,.4)">Indenização financeira</h5><p style="color:rgba(255,255,255,.25)">Estimativa: 1 dia útil</p></div>',
+    '</div></div>',
+    '<div class="acc" style="margin-top:10px">',
+    '<div class="acst"><div class="acbg" style="background:#dcfce7;color:#166534">✓ Concluído</div><div class="actp">Automático</div></div>',
+    '<h3>Alagamento — 28/05</h3><p style="color:var(--aux)">R$ 200 + voucher de hotel 1 noite</p></div>',
+    '</div>',
+    '<div class="bn">',
+    '<button class="ni" onclick="nt(\'hm\',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Início</span><div class="nd"></div></button>',
+    '<button class="ni" onclick="nt(\'mn\',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h3M19 12h3M12 2v3M12 19v3"/><circle cx="12" cy="12" r="3"/></svg><span>Clima</span><div class="nd"></div></button>',
+    '<button class="ni on" onclick="nt(\'ac\',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>Proteções</span><div class="nd"></div></button>',
+    '<button class="ni" onclick="nt(\'ap\',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Apoio</span><div class="nd"></div></button>',
+    '</div></div>',
+    /* APOIO */
+    '<div class="scr" id="ap">',
+    '<div style="height:36px;background:var(--dark);flex-shrink:0"></div>',
+    '<div class="aph"><h2>Estamos com você, Maria. 🤝</h2><p>Atendimento 24 horas. Você nunca está sozinha.</p></div>',
+    '<div class="apb">',
+    '<div class="st">Fale com um especialista</div>',
+    '<div class="ctc"><div class="cti" style="background:rgba(145,222,90,0.12)">🧠</div><div class="ctin"><h4>Apoio psicológico</h4><p>Fale com um psicólogo agora.</p><span style="background:#dcfce7;color:#166534">● Disponível agora</span></div><div class="ctar">›</div></div>',
+    '<div class="ctc"><div class="cti" style="background:rgba(28,63,96,0.12)">🛡️</div><div class="ctin"><h4>Central de emergência</h4><p>Assistência em até 30 minutos.</p><span style="background:#dbeafe;color:#1e40af">24h · 0800-123-456</span></div><div class="ctar">›</div></div>',
+    '<div class="ctc"><div class="cti" style="background:rgba(145,222,90,0.12)">💬</div><div class="ctin"><h4>Chat com a Ele</h4><p>Dúvidas sobre seu plano.</p><span style="background:#dcfce7;color:#166534">● Online</span></div><div class="ctar">›</div></div>',
+    '<div style="background:var(--dark);border-radius:14px;padding:14px;margin-top:6px"><h4 style="font-size:12px;font-weight:800;color:#fff;margin-bottom:3px">Como agir em alagamento?</h4><p style="font-size:9px;color:rgba(255,255,255,.4);line-height:1.5">5 passos simples que podem salvar vidas.</p></div>',
+    '</div>',
+    '<div class="bn">',
+    '<button class="ni" onclick="nt(\'hm\',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Início</span><div class="nd"></div></button>',
+    '<button class="ni" onclick="nt(\'mn\',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h3M19 12h3M12 2v3M12 19v3"/><circle cx="12" cy="12" r="3"/></svg><span>Clima</span><div class="nd"></div></button>',
+    '<button class="ni" onclick="nt(\'ac\',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span>Proteções</span><div class="nd"></div></button>',
+    '<button class="ni on" onclick="nt(\'ap\',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span>Apoio</span><div class="nd"></div></button>',
+    '</div></div>',
+    /* SOS */
+    '<div id="sm"><div class="san"><div class="sin">🛡️</div></div>',
+    '<div class="smt">Como posso te ajudar?</div>',
+    '<div class="sms">Estamos aqui. Escolha sua situação agora.</div>',
+    '<div class="sop"><button class="so so1">🆘 Emergência: acionar proteção</button><button class="so so2">🧠 Apoio emocional</button><button class="so so3">📞 Falar com atendente</button></div>',
+    '<button class="scl" onclick="cS()">Cancelar</button></div>',
+    '<script>(function(){',
+    'var oi=0;',
+    'function obn(){oi=Math.min(oi+1,3);document.getElementById("obs").style.transform="translateX(-"+oi*25+"%)";document.querySelectorAll(".od").forEach(function(d,i){d.classList.toggle("on",i===oi);});}',
+    'document.getElementById("oskip").onclick=function(){gs("hm");};',
+    'var tsx=0,sl=document.getElementById("obs");',
+    'sl.addEventListener("touchstart",function(e){tsx=e.touches[0].clientX;},{passive:true});',
+    'sl.addEventListener("touchend",function(e){if(tsx-e.changedTouches[0].clientX>30)obn();},{passive:true});',
+    'function gs(id){document.querySelectorAll(".scr").forEach(function(s){s.classList.remove("on");});document.getElementById(id).classList.add("on");try{window.parent.postMessage(id==="mn"?"showMap":"hideMap","*");}catch(e){}}',
+    'function nt(screen,el){document.querySelectorAll(".ni").forEach(function(b){b.classList.remove("on");});if(el)el.classList.add("on");gs(screen);}',
+    'var cst=1,css=[null,document.getElementById("cs1"),document.getElementById("cs2"),document.getElementById("cs3"),document.getElementById("cs4")];',
+    'function cdn(){if(cst<4){css[cst].style.display="none";cst++;css[cst].style.display="block";ucb();if(cst===4)document.getElementById("cdbtn").textContent="Ativar proteção 🛡️";}else{gs("hm");}}',
+    'function ucb(){document.querySelectorAll(".cds").forEach(function(s,i){s.classList.remove("dn","ac");if(i+1<cst)s.classList.add("dn");else if(i+1===cst)s.classList.add("ac");});}',
+    'function sp(el){document.querySelectorAll(".plc").forEach(function(c){c.classList.remove("sl");});el.classList.add("sl");}',
+    'function oS(){document.getElementById("sm").classList.add("on");}',
+    'function cS(){document.getElementById("sm").classList.remove("on");}',
+    'window.gs=gs;window.nt=nt;window.obn=obn;window.cdn=cdn;window.sp=sp;window.oS=oS;window.cS=cS;',
+    'window.addEventListener("message",function(e){if(e.data==="showHome"){gs("hm");}});',
+    '})();',
+    '<\/script>',
+    '</body></html>'
+  ].join('');
+
+  /* Escuta navegação do app para mostrar/ocultar overlay do mapa */
+  window.addEventListener('message', function(e) {
+    var overlay = document.getElementById('map-overlay');
+    if(!overlay) return;
+    overlay.style.display = (e.data === 'showMap') ? 'block' : 'none';
+  });
+
+  var blob = new Blob([appHtml], {type:'text/html'});
+  var iframe = document.getElementById('proto-iframe');
+  iframe.src = URL.createObjectURL(blob);
+  /* Home screen already set via class="scr on" in HTML — postMessage as fallback */
+  iframe.addEventListener('load', function(){
+    try {
+      iframe.contentWindow.postMessage('showHome','*');
+    } catch(e){}
+  });
+
+  /* ── Pitch deck engine ── */
+  var cur=0, total=10, busy=false;
+  var slides=document.querySelectorAll('.slide');
+  function changeSlide(d){
+    if(busy)return;
+    var n=cur+d;
+    if(n<0||n>=total)return;
+    busy=true;
+    slides[cur].classList.add('exit');
+    setTimeout(function(){
+      slides[cur].classList.remove('active','exit');
+      cur=n; slides[cur].classList.add('active');
+      document.getElementById('progress-bar').style.width=((cur+1)/total*100)+'%';
+      document.getElementById('slide-counter').textContent=(cur+1)+' / '+total;
+      onEnter(cur);
+      setTimeout(function(){busy=false;},450);
+    },250);
+  }
+  window.changeSlide=changeSlide;
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='ArrowDown')changeSlide(1);
+    if(e.key==='ArrowLeft'||e.key==='ArrowUp')changeSlide(-1);
+  });
+  document.getElementById('progress-bar').style.width='10%';
+
+  var done=new Set();
+  function onEnter(i){
+    if(i===0)typewriter();
+    if(i===1&&!done.has(1)){done.add(1);countUp('#s2 .stat-num');}
+    if(i===2&&!done.has(2)){done.add(2);flowIn();}
+    if(i===4&&!done.has(4)){done.add(4);circlesIn();}
+    if(i===5&&!done.has(5)){done.add(5);revBars();}
+    if(i===7&&!done.has(7)){done.add(7);tlIn();countUp('#s8 .counter');}
+    if(i===8&&!done.has(8)){done.add(8);initChart();}
+  }
+  onEnter(0);
+
+  var phrases=['A proteção precisa evoluir.','Sua empresa precisa de escudo.','A Elementar protege o essencial.'];
+  var pi=0,ci=0,del=false,twStarted=false;
+  function typewriter(){
+    if(twStarted)return; twStarted=true;
+    var el=document.getElementById('tw2');
+    function tick(){
+      var p=phrases[pi];
+      if(!del){el.textContent=p.slice(0,++ci);if(ci===p.length){del=true;setTimeout(tick,1800);return;}}
+      else{el.textContent=p.slice(0,--ci);if(ci===0){del=false;pi=(pi+1)%phrases.length;}}
+      setTimeout(tick,del?38:78);
+    }
+    tick();
+  }
+  function countUp(sel){
+    document.querySelectorAll(sel).forEach(function(el){
+      var tgt=+(el.dataset.target||0);if(!tgt)return;
+      var pre=el.dataset.prefix||'',suf=el.dataset.suffix||'';
+      var t0=null;
+      function f(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/1400,1),e=1-Math.pow(1-p,3);el.textContent=pre+Math.round(e*tgt).toLocaleString('pt-BR')+suf;if(p<1)requestAnimationFrame(f);}
+      requestAnimationFrame(f);
+    });
+  }
+  function flowIn(){document.querySelectorAll('.flow-step').forEach(function(el,i){setTimeout(function(){el.classList.add('visible');},i*200+80);});}
+  function circlesIn(){
+    document.querySelectorAll('.market-circle').forEach(function(el,i){setTimeout(function(){el.classList.add('show');},i*220+100);});
+    document.querySelectorAll('.mc-chip').forEach(function(el,i){setTimeout(function(){el.classList.add('show');},i*220+400);});
+  }
+  function revBars(){document.querySelectorAll('.rev-fill').forEach(function(el,i){setTimeout(function(){el.style.width=el.dataset.width;},i*150+200);});}
+  function tlIn(){document.querySelectorAll('.tl-item').forEach(function(el,i){setTimeout(function(){el.classList.add('visible');},i*160+80);});}
+  function initChart(){
+    var c=document.getElementById('revenueChart');
+    if(!c||c._ok)return; c._ok=true;
+    new Chart(c,{type:'bar',data:{labels:['Ano 1','Ano 2','Ano 3','Ano 4','Ano 5'],datasets:[{data:[5.3,29.1,52.9,209,630.9],backgroundColor:['rgba(145,222,90,.25)','rgba(145,222,90,.4)','rgba(145,222,90,.55)','rgba(145,222,90,.75)','rgba(145,222,90,.95)'],borderColor:'rgba(145,222,90,1)',borderWidth:2,borderRadius:6,hoverBackgroundColor:'rgba(145,222,90,1)'}]},options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return 'R$ '+c.parsed.y+'M';}}}},scales:{x:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'rgba(255,255,255,.45)'}},y:{grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'rgba(255,255,255,.45)',callback:function(v){return 'R$'+v+'M';}},beginAtZero:true}},animation:{duration:1200,easing:'easeOutQuart'}}});
+  }
+})();
+</script>
+</body>
+</html>
