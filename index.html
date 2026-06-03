@@ -161,23 +161,6 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Almarai',sans-seri
 .diff-pill{background:rgba(145,222,90,.06);border:1px solid rgba(145,222,90,.15);border-radius:var(--radius);padding:14px 18px;text-align:center}
 .diff-pill span{font-size:18px;display:block;margin-bottom:6px}
 .diff-pill p{font-size:12px;color:rgba(255,255,255,.55)}
-/* S8 */
-#s8{background:linear-gradient(150deg,#061a04 0%,#08200a 100%)}
-.traction-layout{display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:960px;width:100%}
-.timeline{display:flex;flex-direction:column;position:relative;padding-left:22px}
-.timeline::before{content:'';position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom,var(--accent),rgba(145,222,90,.1))}
-.tl-item{position:relative;padding-bottom:20px;opacity:0;transform:translateX(-8px);transition:.4s}
-.tl-item.visible{opacity:1;transform:none}
-.tl-dot{position:absolute;left:-22px;top:5px;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px rgba(145,222,90,.5)}
-.tl-date{font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--accent);text-transform:uppercase;margin-bottom:3px}
-.tl-text{font-size:14px;font-weight:700;color:#fff}
-.tl-sub{font-size:12px;color:rgba(255,255,255,.38);margin-top:2px;line-height:1.5;font-weight:300}
-.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.kpi-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:22px}
-.kpi-card h5{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px}
-.kpi-card .num{font-size:clamp(28px,3.5vw,40px);font-weight:800;color:#fff}
-.kpi-card .num span{color:var(--accent)}
-.kpi-card .trend{display:flex;align-items:center;gap:5px;margin-top:6px;font-size:11px;color:var(--accent);font-weight:700}
 /* S9 */
 #s9{background:linear-gradient(150deg,#061a04 0%,#08200a 100%)}
 .finance-layout{display:grid;grid-template-columns:1.3fr 1fr;gap:36px;max-width:1000px;width:100%}
@@ -437,26 +420,6 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Almarai',sans-seri
   </div>
 </div>
 
-<!-- S8 -->
-<div class="slide" id="s8">
-  <div class="slide-header"><p class="slide-label">Prova — Tração</p><h2 class="slide-title">Já estamos <span>em movimento</span></h2></div>
-  <div class="traction-layout">
-    <div class="timeline">
-      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Jan 2024</div><div class="tl-text">Validação do conceito</div><div class="tl-sub">42 entrevistas com agricultores e PMEs em SP e MG</div></div>
-      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Abr 2024</div><div class="tl-text">Protótipo funcional</div><div class="tl-sub">MVP do painel de risco com dados reais do INMET</div></div>
-      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Set 2024</div><div class="tl-text">Piloto com 3 empresas</div><div class="tl-sub">100% de pagamentos automáticos em eventos reais</div></div>
-      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Jan 2025</div><div class="tl-text">Parceria estratégica</div><div class="tl-sub">MOU assinado com cooperativa agrícola (8.000 produtores)</div></div>
-      <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">Mai 2025</div><div class="tl-text">Hoje — Pré-lançamento</div><div class="tl-sub">Lista de espera com 1.200 interessados.</div></div>
-    </div>
-    <div class="kpi-grid">
-      <div class="kpi-card"><h5>Entrevistas</h5><div class="num"><span class="counter" data-target="42">0</span></div><div class="trend">▲ 94% intenção de compra</div></div>
-      <div class="kpi-card"><h5>Lista de Espera</h5><div class="num"><span class="counter" data-target="1200">0</span><span style="font-size:22px;color:var(--accent)">+</span></div><div class="trend">▲ Crescimento orgânico</div></div>
-      <div class="kpi-card"><h5>Produtores Parceiros</h5><div class="num"><span class="counter" data-target="8000">0</span></div><div class="trend">▲ Via cooperativa MOU</div></div>
-      <div class="kpi-card"><h5>Acurácia do Modelo</h5><div class="num"><span class="counter" data-target="91">0</span><span style="font-size:18px;color:var(--accent)">%</span></div><div class="trend">▲ Validado em 24 meses</div></div>
-    </div>
-  </div>
-</div>
-
 <!-- S9 -->
 <div class="slide" id="s9">
   <div class="slide-header"><p class="slide-label">Finanças & Projeções</p><h2 class="slide-title">Caminho para o <span>SOM de R$ 175M</span></h2></div>
@@ -482,7 +445,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Almarai',sans-seri
   <div class="ask-content">
     <div class="ask-left">
       <h2>Vamos proteger <em>o que é essencial.</em></h2>
-      <p>Estamos captando nossa rodada pré-seed para acelerar o go-to-market, expandir o modelo de dados e fechar os primeiros contratos B2B.</p>
+      <p>Temos a projeção clara, o modelo desenhado e o time certo para fazer acontecer. O futuro que estamos projetando começa agora. Vamos construir juntos?</p>
       <div class="team-row">
         <div class="team-chip"><div class="team-avatar">BT</div><span class="team-name">Beatriz Tome — CEO</span></div>
         <div class="team-chip"><div class="team-avatar">LK</div><span class="team-name">Luis Kalil — CTO</span></div>
@@ -495,7 +458,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Almarai',sans-seri
     </div>
     <div class="ask-box">
       <div class="ask-amount">R$ 2M</div>
-      <div class="ask-lbl">Rodada Pré-Seed · Equity</div>
+      <div class="ask-lbl">Projeção financeira estimada para o nosso próximo estágio de tração.</div>
       <div class="ask-items">
         <div class="ask-item"><div class="ask-item-row"><span class="ask-item-name">Tecnologia & Dados</span><span class="ask-item-val">R$ 700k</span></div><div class="ask-bar"><div class="ask-fill" style="width:35%"></div></div></div>
         <div class="ask-item"><div class="ask-item-row"><span class="ask-item-name">Go-to-Market & Growth</span><span class="ask-item-val">R$ 500k</span></div><div class="ask-bar"><div class="ask-fill" style="width:25%"></div></div></div>
@@ -816,7 +779,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Almarai',sans-seri
   });
 
   /* ── Pitch deck engine ── */
-  var cur=0, total=10, busy=false;
+  var cur=0, total=9, busy=false;
   var slides=document.querySelectorAll('.slide');
   function changeSlide(d){
     if(busy)return;
@@ -847,8 +810,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Almarai',sans-seri
     if(i===2&&!done.has(2)){done.add(2);flowIn();}
     if(i===4&&!done.has(4)){done.add(4);circlesIn();}
     if(i===5&&!done.has(5)){done.add(5);revBars();}
-    if(i===7&&!done.has(7)){done.add(7);tlIn();countUp('#s8 .counter');}
-    if(i===8&&!done.has(8)){done.add(8);initChart();}
+    if(i===7&&!done.has(7)){done.add(7);initChart();}
   }
   onEnter(0);
 
